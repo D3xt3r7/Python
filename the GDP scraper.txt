@@ -1,0 +1,84 @@
+import numpy as np
+import pandas as pd
+
+def fetch_gdp_data(url):
+    """
+    Fetches GDP data for countries from the specified URL and returns a DataFrame with the top 10 economies.
+
+    Args:
+        url (str): URL of the webpage containing the data (Wikipedia).
+
+    Returns:
+        pandas.DataFrame: DataFrame with columns 'Country' and 'GDP (Billion USD)'.
+
+    Raises:
+        ValueError: If data cannot be fetched or the table is invalid.
+    """
+    try:
+        # Fetch tables from the webpage
+        tables = pd.read_html(url, match="Country/Territory")
+        if len(tables) < 4:
+            raise ValueError("No suitable table found on the webpage.")
+        
+        # Select table number 3
+        df = tables[3]
+        
+        # Replace column headers with numbers
+        df.columns = range(df.shape[1])
+        
+        # Retain columns: country name (0) and IMF GDP (2)
+        df = df[[0, 2]]
+        
+        # Select rows 1-10 (top 10 economies)
+        df = df.iloc[1:11, :]
+        
+        # Assign column names
+        df.columns = ['Country', 'GDP (Million USD)']
+        
+        # Convert GDP to integer, handling non-numeric values
+        df['GDP (Million USD)'] = pd.to_numeric(df['GDP (Million USD)'], errors='coerce').astype('Int64')
+        if df['GDP (Million USD)'].isnull().any():
+            raise ValueError("Some GDP values could not be converted to numbers.")
+        
+        # Convert GDP from million to billion USD and round to 2 decimal places
+        df['GDP (Billion USD)'] = np.round(df['GDP (Million USD)'] / 1000, 2)
+        
+        # Drop the million USD column
+        df = df.drop(columns=['GDP (Million USD)'])
+        
+        return df
+    
+    except Exception as e:
+        raise ValueError(f"Error fetching data: {e}")
+
+def save_to_csv(df, filename):
+    """
+    Saves the DataFrame to a CSV file.
+
+    Args:
+        df (pandas.DataFrame): DataFrame to save.
+        filename (str): Name of the CSV file.
+
+    Raises:
+        IOError: If saving to the file fails.
+    """
+    try:
+        df.to_csv(filename, index=False)
+        print(f"Data saved to file: {filename}")
+    except Exception as e:
+        raise IOError(f"Error saving to file: {e}")
+
+if __name__ == "__main__":
+    # URL to the archived Wikipedia page
+    url = "https://web.archive.org/web/20230902185326/https://en.wikipedia.org/wiki/List_of_countries_by_GDP_%28nominal%29"
+    
+    try:
+        # Fetch and process data
+        df = fetch_gdp_data(url)
+        print("Top 10 economies of the world:\n", df)
+        
+        # Save to CSV
+        save_to_csv(df, "Largest_economies.csv")
+        
+    except (ValueError, IOError) as e:
+        print(f"Error: {e}")

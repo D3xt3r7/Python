@@ -1,0 +1,127 @@
+"""
+Music Library: A simple program to manage and analyze a collection of music albums.
+Demonstrates lists, loops, functions, dictionaries, and variable scope.
+"""
+
+def calculate_score(rating, bonus):
+    """
+    Calculate a score based on a rating and a bonus value.
+    Formula: rating + bonus + 2 * rating * bonus - 1
+    
+    Args:
+        rating (float): The base rating of an album.
+        bonus (float): A bonus value (e.g., for popularity).
+    
+    Returns:
+        float: Calculated score.
+    """
+    return rating + bonus + 2 * rating * bonus - 1
+
+def get_genre_frequency(albums):
+    """
+    Count the frequency of genres in a list of albums.
+    
+    Args:
+        albums (list): List of dictionaries with album details (including genre).
+    
+    Returns:
+        dict: Dictionary with genres as keys and their frequencies as values.
+    """
+    genre_freq = {}
+    for album in albums:
+        genre = album["genre"].lower()  # Normalize to lowercase
+        if genre in genre_freq:
+            genre_freq[genre] += 1
+        else:
+            genre_freq[genre] = 1
+    return genre_freq
+
+def rate_album(album_name, favorite_band="AC/DC"):
+    """
+    Rate an album based on whether it belongs to the favorite band.
+    
+    Args:
+        album_name (str): Name of the album or band.
+        favorite_band (str): The favorite band for comparison (default: AC/DC).
+    
+    Returns:
+        float: 10.0 if the album matches the favorite band, 0.0 otherwise.
+    """
+    if album_name == favorite_band:
+        return 10.0
+    return 0.0
+
+def print_high_rated_albums(ratings, threshold=6.0):
+    """
+    Print albums with ratings above a threshold using a while loop.
+    Stops if a rating is below the threshold.
+    
+    Args:
+        ratings (list): List of album ratings.
+        threshold (float): Minimum rating to display (default: 6.0).
+    """
+    i = 0
+    while i < len(ratings) and ratings[i] >= threshold:
+        print(f"Rating at index {i}: {ratings[i]}")
+        i += 1
+def print_album_info(**info):
+    """Display album information from keyword arguments."""
+    for key, value in info.items():
+        print(f"{key}: {value}")
+        return info
+
+def freq(text, target_word):
+    words = text.translate(str.maketrans('', '', string.punctuation)).lower().split()
+    word_count = {target_word: words.count(target_word)}
+    print('Total count:', word_count)
+    return word_count
+
+def main():
+    """
+    Main function to demonstrate the music library functionality.
+    """
+    # Define a list of albums (dictionaries for richer data)
+    albums = [
+        {"name": "Back in Black", "band": "AC/DC", "genre": "Rock", "rating": 10.0},
+        {"name": "Thriller", "band": "Michael Jackson", "genre": "Pop", "rating": 9.5},
+        {"name": "Dark Side of the Moon", "band": "Pink Floyd", "genre": "Rock", "rating": 8.0},
+        {"name": "Bad", "band": "Michael Jackson", "genre": "Pop", "rating": 7.5},
+        {"name": "Rumours", "band": "Fleetwood Mac", "genre": "Rock", "rating": 5.0},
+    ]
+
+    print("\nAlbum info:")
+    print_album_info(Album='Thriller', Artist='Michael Jackson', Year=1982)
+
+    print("\nWord frequency in lyrics:")
+    freq(albums[0]["lyrics"], "love")  
+
+    # Demonstrate mutability: Change ratings below 6 to 6
+    print("\nModifying ratings below 6 to 6:")
+    for i in range(len(albums)):
+        if albums[i]["rating"] < 6:
+            print(f"Before: {albums[i]['name']} has rating {albums[i]['rating']}")
+            albums[i]["rating"] = 6.0
+            print(f"After: {albums[i]['name']} has rating {albums[i]['rating']}")
+
+    # Print high-rated albums using while loop
+    print("\nHigh-rated albums (rating >= 6):")
+    ratings = [album["rating"] for album in albums]
+    print_high_rated_albums(ratings)
+
+    # Calculate frequency of genres
+    print("\nGenre frequency:")
+    genre_freq = get_genre_frequency(albums)
+    print(genre_freq)
+
+    # Rate specific albums
+    print("\nAlbum ratings:")
+    print(f"AC/DC's rating: {rate_album('AC/DC')}")
+    print(f"Deep Purple's rating: {rate_album('Deep Purple')}")
+
+    # Demonstrate arithmetic calculation
+    print("\nCalculating score for an album:")
+    score = calculate_score(albums[0]["rating"], 2.0)  # Example with rating=10, bonus=2
+    print(f"Score for {albums[0]['name']}: {score}")
+
+if __name__ == "__main__":
+    main()

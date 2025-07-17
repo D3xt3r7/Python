@@ -1,0 +1,34 @@
+import string
+import pandas as pd
+
+class TextAnalyzer(object):
+    
+    def __init__ (self, text):
+        # remove punctuation
+        self.clean_text=text.translate(str.maketrans('', '', string.punctuation))
+        self.fText= self.clean_text.lower().split()
+        self.original_text = text
+        
+        
+    def freqAll(self):        
+        freq={}
+        for word in self.fText:
+            freq[word]=freq.get(word,0)+1
+        return freq
+        
+    def freqSpecWord(self, word):
+        freqDf=self.freqAll()
+        if word in freqDf:
+            return freqDf[word]
+        else:
+            return 0
+#Test
+    if __name__ == "__main__":
+        try:
+            givenstring = "Lorem ipsum dolor! diam amet, consetetur Lorem magna. sed diam nonumy eirmod tempor. diam et labore? et diam magna. et diam amet."
+            analyzer = TextAnalyzer(givenstring)
+            print("Oczyszczony tekst (lista słów):", analyzer.fText)
+            print("\nCzęstotliwość wszystkich słów:\n", analyzer.freqAll())
+            print("Częstotliwość słowa 'diam':", analyzer.freqSpecWord("diam"))
+        except Exception as e:
+            print(f"Błąd: {e}")

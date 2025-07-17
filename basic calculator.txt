@@ -1,0 +1,41 @@
+def calculator():
+    """
+    A basic calculator that performs addition, subtraction, multiplication, and division.
+    
+    Returns:
+        float or None: The result of the operation, or None if an error occurs.
+    """
+    try:
+        # Get input from the user
+        num1 = float(input("Enter the first number: "))
+        num2 = float(input("Enter the second number: "))
+        operation = input("Enter the operation (+, -, *, /): ")
+
+        # Perform the operation
+        if operation == "+":
+            result = num1 + num2
+        elif operation == "-":
+            result = num1 - num2
+        elif operation == "*":
+            result = num1 * num2
+        elif operation == "/":
+            if num2 == 0:
+                print("Error: Cannot divide by zero!")
+                return None
+            result = num1 / num2
+        else:
+            print("Error: Invalid operation! Use +, -, * or /.")
+            return None
+
+        # Display and return the result
+        print("Result:", result)
+        return result
+
+    except ValueError:
+        print("Error: Please enter valid numbers!")
+        return None
+    finally:
+        print("Calculation completed.")
+
+# Test the calculator
+calculator()
