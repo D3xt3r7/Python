@@ -1,10 +1,16 @@
-with open ('customers.txt', 'r') as text:
-    customers=text.readlines()
-adult_cus=[]
+# Otwórz plik i przeczytaj linie
+with open('customers.txt', 'r') as file:
+    customers = file.readlines()
+
+# Lista dla pełnoletnich klientów
+adult_customers = []
+
+# Przejdź przez każdą linię w pliku
 for customer in customers:
-    name, age=customer.strip().split(',')
-    if int(age) >=18:
-        adult_cus.append(name)
-print('Klienci pelnoletni:')
-for customer in adult_cus:
+    name, age = customer.strip().split(',')  # Usuń białe znaki i podziel linię
+    if int(age) >= 18:
+        adult_customers.append(name)
+
+print("Pełnoletni klienci:")
+for customer in adult_customers:
     print(customer)
