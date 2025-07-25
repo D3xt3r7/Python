@@ -1,0 +1,17 @@
+# Otwórz plik i przeczytaj linie
+with open('sales.txt', 'r') as file:
+    sales_entries = file.readlines()
+
+# Lista do przechowywania wszystkich wartości sprzedaży
+all_sales = []
+
+# Przejdź przez każdą linię w pliku
+for entry in sales_entries:
+    split_entry = entry.strip().split(',')  # Usuń białe znaki i podziel linię
+    amount = int(split_entry[1])  # Użyj indeksu [1] aby pobrać wartość sprzedaży
+    all_sales.append(amount)  # Dodaj wartość sprzedaży do listy
+
+# Sumuj wszystkie wartości sprzedaży
+total_sales = sum(all_sales)
+
+print("Całkowita wartość sprzedaży:", total_sales)
