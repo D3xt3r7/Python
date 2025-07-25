@@ -1,0 +1,10 @@
+with open ('customers.txt', 'r') as text:
+    customers=text.readlines()
+adult_cus=[]
+for customer in customers:
+    name, age=customer.strip().split(',')
+    if int(age) >=18:
+        adult_cus.append(name)
+print('Klienci pelnoletni:')
+for customer in adult_cus:
+    print(customer)
