@@ -1,0 +1,25 @@
+events = [
+    {'name': 'Koncert', 'date': '2023-12-25'},
+    {'name': 'Spotkanie biznesowe', 'date': '2022-11-15'},
+    {'name': 'Urodziny', 'date': '2024-03-03'}
+]
+
+from datetime import datetime
+
+def find_nearest_event(events):
+    today = datetime.now().date()
+    nearest_event = None
+    smallest_diff = None
+    
+    for event in events:
+        event_date = datetime.strptime(event['date'], '%Y-%m-%d').date()
+        date_diff = abs((event_date - today).days)
+        
+        if nearest_event is None or date_diff < smallest_diff:
+            nearest_event = event
+            smallest_diff = date_diff
+            
+    return nearest_event
+
+
+print(find_nearest_event(events))
