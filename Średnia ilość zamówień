@@ -1,0 +1,18 @@
+data = [
+    {'quarter': 'Q1', 'customers': 0, 'orders': 0},
+    {'quarter': 'Q1', 'customers': 10, 'orders': 30},
+    {'quarter': 'Q1', 'customers': 22, 'orders': 67},
+    {'quarter': 'Q1', 'customers': 48, 'orders': 111}
+]
+
+def orders_per_client(lst):
+    result = []
+    for l in lst:
+        try:
+            result.append(l.get('orders')/l.get('customers'))
+        except (ZeroDivisionError):
+            pass
+    return round(max(result), 2)
+
+# Przykład wywołania
+print(orders_per_client(data))
