@@ -1,0 +1,39 @@
+import os
+
+# data sample below
+# dir data/sales_january.txt
+# date,product,quantity
+# 2024-01-01,Apple,50
+
+def read_sales_data(filepath: str) -> list:
+    """ 
+    Read sales txt file and returns list with dictionaries
+    """
+    data = []
+    with open(filepath, 'r') as file:
+        next(file) # skip header
+        for line in file:
+            date, product, quantity = line.strip().split(',')
+            data.append({'date': date, 'product': product, 'quantity': quantity})
+    return data    
+
+print(read_sales_data('data/sales_january.txt'))
+
+def total_sales_2(directory: str, product_name: str) -> int:
+    """
+    Checks folder for sales files and returns total product quantity
+    """
+    total = 0
+    for file in os.listdir(directory):
+        if file.endswith('.txt'):
+            filepath = os.path.join(directory, file)
+            data = read_sales_data(filepath)
+            for d in data:
+                if d['product'] == product_name:
+                    total += int(d['quantity'])
+    return total  
+
+d = os.path.join(os.getcwd(), 'data')
+p = 'Apple'
+print(total_sales_2(d, p))
+print(f'Total quantity of {p} sold: {total_sales_2(d, p)}.')
